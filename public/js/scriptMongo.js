@@ -18,9 +18,9 @@ const formSubmitted = () => {
     formData.title = $('#title').val();
     formData.title2 = $('#title2').val();
     formData.subTitle = $('#subTitle').val();
-    formData.path = $('#path').val();
     formData.description = $('#description').val();
-
+    formData.path = $('#imagePreview').attr('src');
+    
     console.log(formData);
     postCuisine(formData);
 }
@@ -53,5 +53,17 @@ $(document).ready(function () {
         formSubmitted();
     });
     $('.modal').modal();
+    $("#imageInput").on("change", function () {
+      let file = $("#imageInput")[0].files[0];
+
+      if (file) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          let base64String = reader.result.replace("data:", "").replace(/^.+,/, "");
+          $('#imagePreview').attr('src', `data:image/png;base64,${base64String}`);
+        };      
+      }
+    });
     getAllCuisines();
 });
